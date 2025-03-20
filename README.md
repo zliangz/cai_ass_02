@@ -2,7 +2,7 @@
 Join our [Discord server](https://discord.gg/qvXK3DJTuz)!
 Read the [Call for Participants](docs/Automated_Negotiation_League_2023.pdf)!
 
-This is a template repository for the Agent Negotiation League (ANL) of [ANAC](https://web.tuat.ac.jp/~katfuji/ANAC2023/index.html) which will be held at AAMAS 2025. 
+This is a template repository for the Agent Negotiation League (ANL) of [ANAC](https://web.tuat.ac.jp/~katfuji/ANAC2023/index.html) which will be held at AAMAS 2023. 
 
 ## Overview
 - directories:
