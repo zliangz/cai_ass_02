@@ -48,6 +48,9 @@ class Group12Agent(DefaultParty):
         self.settings: Settings = None
         self.storage_dir: str = None
 
+        self.consecutive_improvements = 0
+        self.last_opponent_utility = 0
+        self.repeated_proposals = 0
         self.last_received_bid: Bid = None
         self.opponent_model: OpponentModel = None
         self.logger.log(logging.INFO, "party is initialized")
@@ -191,16 +194,23 @@ class Group12Agent(DefaultParty):
         if bid is None:
             return False
 
-        # progress of the negotiation session between 0 and 1 (1 is deadline)
+        # progress of the negotiation session between 0 and 1 seconds (1 is deadline)
         progress = self.progress.get(time() * 1000)
 
-        # very basic approach that accepts if the offer is valued above 0.7 and
-        # 95% of the time towards the deadline has passed
-        conditions = [
-            self.profile.getUtility(bid) > 0.8,
-            progress > 0.95,
-        ]
-        return all(conditions)
+        reservation_bid = self.profile.getReservationBid()
+        reservation_value = self.profile.getUtility(reservation_bid)
+        static_threshold = 1.2 * reservation_value
+
+        offer = self.profile.getUtility(bid)
+        if offer < static_threshold:
+            return False
+
+        # Very basic approach that accepts if the offer is valued above 1.2 times the static
+        # threshold and 90% of the time towards the deadline has passed
+        if progress > 0.9:
+            return True
+
+        return False
 
     def find_bid(self) -> Bid:
         # compose a list of all possible bids
